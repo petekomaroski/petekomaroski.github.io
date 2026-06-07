@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- !! UPDATE: Replace "Your Name" throughout !! -->
+  <title>Photography — Your Name</title>
+  <meta name="description" content="Photography portfolio of Your Name." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── PHOTOGRAPHY-SPECIFIC STYLES ── */
+
+    /* Header row with filters */
+    .photo-header {
+      padding: 3rem 2.5rem 2rem;
+      border-bottom: 0.5px solid var(--rule);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .photo-header h1 {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 400;
+    }
+
+    /* Category filter buttons */
+    .filter-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border: 0.5px solid var(--rule);
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--sans);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(59, 77, 58, 0.05);
+    }
+
+    /* ── PHOTO GRID ── */
+    /*
+     * The grid uses CSS columns for a masonry-style layout.
+     * Each .photo-cell is a container for one image.
+     *
+     * HOW TO ADD PHOTOS:
+     *   1. Add your image file to the /images/ folder
+     *   2. Copy a .photo-cell block below
+     *   3. Update the src, alt, data-category, and caption
+     *
+     * data-category must match one of the filter button values:
+     *   landscape | architecture | documentary | portrait
+     *   (or add your own — update the filter buttons too)
+     */
+    .photo-grid {
+      column-count: 3;
+      column-gap: 2px;
+      padding: 2px;
+    }
+
+    .photo-cell {
+      break-inside: avoid;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2px;
+      cursor: pointer;
+      display: block;
+    }
+
+    /* When a category filter is active, hide non-matching cells */
+    .photo-cell.hidden {
+      display: none;
+    }
+
+    .photo-cell img {
+      width: 100%;
+      display: block;
+      transition: transform 0.5s ease;
+      background: var(--rule); /* placeholder color while loading */
+    }
+
+    .photo-cell:hover img {
+      transform: scale(1.03);
+    }
+
+    /* Overlay caption on hover */
+    .photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(28, 26, 23, 0);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.25rem;
+      transition: background 0.3s;
+    }
+
+    .photo-cell:hover .photo-overlay {
+      background: rgba(28, 26, 23, 0.5);
+    }
+
+    .photo-caption {
+      opacity: 0;
+      transition: opacity 0.3s;
+      color: #FAF8F4;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .photo-cell:hover .photo-caption {
+      opacity: 1;
+    }
+
+    /* ── LIGHTBOX ── */
+    /* Clicking a photo opens a simple fullscreen lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(28, 26, 23, 0.96);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 2rem;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 80vh;
+      object-fit: contain;
+    }
+
+    .lightbox-caption {
+      margin-top: 1rem;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(250, 248, 244, 0.6);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(250, 248, 244, 0.6);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--sans);
+      transition: color 0.2s;
+    }
+
+    .lightbox-close:hover { color: #FAF8F4; }
+
+    /* Prev / Next buttons in lightbox */
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(250, 248, 244, 0.5);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--sans);
+      padding: 1rem;
+      transition: color 0.2s;
+    }
+
+    .lightbox-nav:hover { color: #FAF8F4; }
+    .lightbox-prev { left: 1rem; }
+    .lightbox-next { right: 1rem; }
+
+    @media (max-width: 700px) {
+      .photo-header { padding: 2rem 1.25rem 1.5rem; }
+      .photo-grid { column-count: 2; }
+    }
+
+    @media (max-width: 480px) {
+      .photo-grid { column-count: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAVIGATION ══════════════════════════════════════════ -->
+  <nav>
+    <a href="index.html" class="nav-name">Your Name</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="research.html">Research &amp; CV</a></li>
+      <li><a href="photography.html">Photography</a></li>
+    </ul>
+  </nav>
+
+  <!-- ══ HEADER + FILTERS ════════════════════════════════════ -->
+  <div class="photo-header">
+    <h1>Portfolio</h1>
+    <div class="filter-row">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <!-- !! UPDATE: Change/add categories to match your work !! -->
+      <button class="filter-btn" data-filter="landscape">Landscape</button>
+      <button class="filter-btn" data-filter="architecture">Architecture</button>
+      <button class="filter-btn" data-filter="documentary">Documentary</button>
+      <button class="filter-btn" data-filter="portrait">Portrait</button>
+    </div>
+  </div>
+
+  <!-- ══ PHOTO GRID ═══════════════════════════════════════════
+       HOW TO ADD YOUR PHOTOS:
+       1. Put your image files in the /images/ folder
+       2. Duplicate a .photo-cell block
+       3. Set src="images/your-filename.jpg"
+       4. Set alt="A brief description" (important for accessibility)
+       5. Set data-category to match one of your filter buttons
+       6. Set data-caption to the text shown on hover and in the lightbox
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="photo-grid" id="photoGrid">
+
+    <!--
+      PLACEHOLDER CELLS — replace each one with a real photo.
+      The colored divs below simulate images until you add yours.
+      Delete the <div class="photo-placeholder"> and replace with:
+        <img src="images/your-photo.jpg" alt="Description" loading="lazy" />
+    -->
+
+    <div class="photo-cell" data-category="landscape" data-caption="Landscape Series — No. 1"
+         onclick="openLightbox(this)">
+      <div class="photo-placeholder" style="aspect-ratio:3/2; background: linear-gradient(135deg,#C8B89A,#6B5A3A);"></div>
+      <div class="photo-overlay"><span class="photo-caption">Landscape Series — No. 1</span></div>
+    </div>
+
+    <div class="photo-cell" data-category="architecture" data-caption="Architecture — City, Year"
+         onclick="openLightbox(this)">
+      <div class="photo-placeholder" style="aspect-ratio:2/3; background: linear-gradient(160deg,#7A8E7B,#3A5A48);"></div>
+      <div class="photo-overlay"><span class="photo-caption">Architecture — City, Year</span></div>
+    </div>
+
+    <div class="photo-cell" data-category="documentary" data-caption="Documentary — Subject, Year"
+         onclick="openLightbox(this)">
+      <div class="photo-placeholder" style="aspect-ratio:3/2; background: linear-gradient(135deg,#8B9EB0,#3A5A6A);"></div>
+      <div class="photo-overlay"><span class="photo-caption">Documentary — Subject, Year</span></div>
+    </div>
+
+    <div class="photo-cell" data-category="portrait" data-caption="Portrait — Location, Year"
+         onclick="openLightbox(this)">
+      <div class="photo-placeholder" style="aspect-ratio:2/3; background: linear-gradient(160deg,#C4A882,#7A5030);"></div>
+      <div class="photo-overlay"><span class="photo-caption">Portrait — Location, Year</span></div>
+    </div>
+
+    <div class="photo-cell" data-category="landscape" data-caption="Landscape Series — No. 2"
+         onclick="openLightbox(this)">
+      <div class="photo-placeholder" style="aspect-ratio:3/2; background: linear-gradient(135deg,#9EB09E,#5A7A5A);"></div>
+      <div class="photo-overlay"><span class="photo-caption">Landscape Series — No. 2</span></div>
+    </div>
+
+    <div class="photo-cell" data-category="architecture" data-caption="Architecture — Interior, Year"
+         onclick="openLightbox(this)">
+      <div class="photo-placeholder" style="aspect-ratio:4/3; background: linear-gradient(160deg,#B0A08A,#6A5040);"></div>
+      <div class="photo-overlay"><span class="photo-caption">Architecture — Interior, Year</span></div>
+    </div>
+
+    <div class="photo-cell" data-category="documentary" data-caption="Documentary — Series II"
+         onclick="openLightbox(this)">
+      <div class="photo-placeholder" style="aspect-ratio:2/3; background: linear-gradient(135deg,#A89880,#5A4A30);"></div>
+      <div class="photo-overlay"><span class="photo-caption">Documentary — Series II</span></div>
+    </div>
+
+    <div class="photo-cell" data-category="landscape" data-caption="Landscape Series — No. 3"
+         onclick="openLightbox(this)">
+      <div class="photo-placeholder" style="aspect-ratio:3/2; background: linear-gradient(160deg,#C0B0A0,#8A7060);"></div>
+      <div class="photo-overlay"><span class="photo-caption">Landscape Series — No. 3</span></div>
+    </div>
+
+    <div class="photo-cell" data-category="portrait" data-caption="Portrait — Series II"
+         onclick="openLightbox(this)">
+      <div class="photo-placeholder" style="aspect-ratio:4/3; background: linear-gradient(135deg,#8A9A8A,#4A6A4A);"></div>
+      <div class="photo-overlay"><span class="photo-caption">Portrait — Series II</span></div>
+    </div>
+
+  </div>
+  <!-- end #photoGrid -->
+
+  <!-- ══ LIGHTBOX ════════════════════════════════════════════ -->
+  <div class="lightbox" id="lightbox" onclick="closeLightboxOnBg(event)">
+    <button class="lightbox-close" onclick="closeLightbox()">✕ Close</button>
+    <button class="lightbox-nav lightbox-prev" onclick="stepLightbox(-1)">← Prev</button>
+    <img id="lightboxImg" src="" alt="" />
+    <p class="lightbox-caption" id="lightboxCaption"></p>
+    <button class="lightbox-nav lightbox-next" onclick="stepLightbox(1)">Next →</button>
+  </div>
+
+  <!-- ══ FOOTER ═══════════════════════════════════════════════ -->
+  <footer>
+    <p>&copy; 2026 Your Name. All rights reserved.</p>
+    <ul class="footer-links">
+      <li><a href="research.html">Research &amp; CV</a></li>
+      <li><a href="photography.html">Photography</a></li>
+      <li><a href="mailto:you@university.edu">Contact</a></li>
+    </ul>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script>
+    /* ── FILTER LOGIC ── */
+    var filterBtns = document.querySelectorAll('.filter-btn');
+    var cells = document.querySelectorAll('.photo-cell');
+
+    filterBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var filter = this.getAttribute('data-filter');
+
+        // Update active button
+        filterBtns.forEach(function (b) { b.classList.remove('active'); });
+        this.classList.add('active');
+
+        // Show / hide cells
+        cells.forEach(function (cell) {
+          if (filter === 'all' || cell.getAttribute('data-category') === filter) {
+            cell.classList.remove('hidden');
+          } else {
+            cell.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    /* ── LIGHTBOX LOGIC ── */
+    var currentIndex = 0;
+    var visibleCells = [];
+
+    function openLightbox(cell) {
+      // Rebuild visible list (respects active filter)
+      visibleCells = Array.from(document.querySelectorAll('.photo-cell:not(.hidden)'));
+      currentIndex = visibleCells.indexOf(cell);
+      showLightboxItem(currentIndex);
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function showLightboxItem(index) {
+      var cell = visibleCells[index];
+      var img = cell.querySelector('img');
+      var placeholder = cell.querySelector('.photo-placeholder');
+      var caption = cell.getAttribute('data-caption') || '';
+      var lbImg = document.getElementById('lightboxImg');
+      var lbCap = document.getElementById('lightboxCaption');
+
+      if (img) {
+        lbImg.src = img.src;
+        lbImg.alt = img.alt;
+        lbImg.style.display = 'block';
+      } else if (placeholder) {
+        // Show placeholder color block while real photos aren't added yet
+        lbImg.src = '';
+        lbImg.style.display = 'none';
+        lbCap.textContent = caption + ' (placeholder — add your image)';
+        return;
+      }
+      lbCap.textContent = caption;
+    }
+
+    function stepLightbox(dir) {
+      currentIndex = (currentIndex + dir + visibleCells.length) % visibleCells.length;
+      showLightboxItem(currentIndex);
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function closeLightboxOnBg(e) {
+      if (e.target === document.getElementById('lightbox')) {
+        closeLightbox();
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function (e) {
+      if (!document.getElementById('lightbox').classList.contains('open')) return;
+      if (e.key === 'ArrowRight') stepLightbox(1);
+      if (e.key === 'ArrowLeft') stepLightbox(-1);
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+</body>
+</html>

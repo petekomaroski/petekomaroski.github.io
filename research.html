@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- !! UPDATE: Replace "Your Name" throughout !! -->
+  <title>Research &amp; CV — Your Name</title>
+  <meta name="description" content="Publications, working papers, and curriculum vitae for Your Name." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    /* ── TWO-COLUMN LAYOUT ── */
+    /*
+     * Left col  → Publications & Research (wider)
+     * Right col → CV (narrower, sticky sidebar)
+     * On mobile they stack, publications first
+     */
+    .two-col-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 0;
+      min-height: calc(100vh - 60px);
+    }
+
+    .col-publications {
+      padding: 3.5rem 3rem 4rem 2.5rem;
+      border-right: 0.5px solid var(--rule);
+    }
+
+    .col-cv {
+      padding: 3.5rem 2.5rem 4rem 2.5rem;
+      /* Sticky so the CV panel travels with the reader */
+      position: sticky;
+      top: 60px; /* height of nav */
+      height: calc(100vh - 60px);
+      overflow-y: auto;
+      /* Hide scrollbar but keep scrollability */
+      scrollbar-width: none;
+    }
+    .col-cv::-webkit-scrollbar { display: none; }
+
+    /* ── PUBLICATIONS COLUMN ── */
+
+    .research-intro {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.85;
+      margin-bottom: 2.75rem;
+    }
+
+    .pub-section { margin-bottom: 2.75rem; }
+
+    .pub-item {
+      padding: 1.5rem 0;
+      border-bottom: 0.5px solid var(--rule);
+    }
+    .pub-item:first-child { padding-top: 0; }
+    .pub-item:last-child  { border-bottom: none; }
+
+    .pub-venue {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 0.35rem;
+    }
+
+    /*
+     * The pub-title doubles as the download link when a PDF is available.
+     * Clicking the title triggers the download — no extra button needed.
+     */
+    .pub-title {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.45;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+      display: block;
+    }
+
+    /* When a PDF href is set, style the title as a subtle link */
+    a.pub-title {
+      transition: color 0.2s;
+      text-decoration: none;
+    }
+    a.pub-title:hover {
+      color: var(--accent);
+    }
+    /* Small ↓ icon appended via CSS when title is a download link */
+    a.pub-title[download]::after {
+      content: ' ↓';
+      font-family: var(--sans);
+      font-size: 11px;
+      color: var(--accent-light);
+      font-style: normal;
+    }
+
+    .pub-authors {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 0.55rem;
+      font-weight: 300;
+    }
+
+    .pub-abstract {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 0.75rem;
+      font-weight: 300;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .pub-abstract.expanded {
+      display: block;
+      -webkit-line-clamp: unset;
+    }
+
+    .pub-links {
+      display: flex;
+      gap: 1.25rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .pub-link {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-bottom: 0.5px solid var(--accent-light);
+      padding-bottom: 1px;
+      transition: color 0.2s;
+    }
+    .pub-link:hover { color: var(--ink); border-color: var(--ink); }
+
+    .pub-toggle {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      margin-left: auto;
+      font-family: var(--sans);
+      transition: color 0.2s;
+    }
+    .pub-toggle:hover { color: var(--ink); }
+
+    .pub-status {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 0.5px solid var(--accent-light);
+      color: var(--accent);
+      padding: 2px 9px;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+      position: relative;
+      top: -2px;
+    }
+
+    /* ── CV COLUMN ── */
+
+    .cv-col-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 0.5px solid var(--rule);
+    }
+
+    .cv-col-header h1 {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
+    }
+
+    .cv-col-header p {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .cv-section { margin-bottom: 2rem; }
+
+    .cv-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 0 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .cv-year {
+      font-size: 11px;
+      color: var(--muted);
+      padding-top: 3px;
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    .cv-item-title {
+      font-family: var(--serif);
+      font-size: 0.88rem;
+      font-weight: 400;
+      margin-bottom: 0.15rem;
+      line-height: 1.4;
+    }
+
+    .cv-item-sub {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .two-col-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .col-cv {
+        position: static;
+        height: auto;
+        overflow: visible;
+        border-top: 0.5px solid var(--rule);
+        padding: 2.5rem 1.25rem 3rem;
+      }
+      .col-publications {
+        border-right: none;
+        padding: 2.5rem 1.25rem 2rem;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAVIGATION ══════════════════════════════════════════ -->
+  <nav>
+    <a href="index.html" class="nav-name">Your Name</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="research.html">Research &amp; CV</a></li>
+      <li><a href="photography.html">Photography</a></li>
+    </ul>
+  </nav>
+
+  <!-- ══ TWO-COLUMN LAYOUT ═══════════════════════════════════ -->
+  <div class="two-col-wrapper">
+
+    <!-- ════════════════════════════════════════
+         LEFT COLUMN — PUBLICATIONS & RESEARCH
+    ═════════════════════════════════════════ -->
+    <div class="col-publications">
+
+      <div class="page-header">
+        <h1>Research</h1>
+        <p>Publications, working papers, and policy work</p>
+      </div>
+
+      <!-- !! UPDATE: 2–3 sentences about your research !! -->
+      <p class="research-intro">
+        My research sits at the intersection of [field A] and [field B], with a focus on
+        [your main question or theme]. I use [your methods] to study [what you study].
+        My work has appeared in [journals] and has been cited in [policy contexts, if any].
+      </p>
+
+      <!-- PEER-REVIEWED PUBLICATIONS ──────────────────────── -->
+      <div class="pub-section">
+        <p class="section-label">Peer-Reviewed Publications</p>
+
+        <!--
+          HOW TO LINK A PDF FOR DOWNLOAD:
+          ─────────────────────────────────────────────────────
+          1. Create a folder in your GitHub repo: /papers/
+          2. Upload your PDF there, e.g. /papers/smith-2024-labor.pdf
+          3. Change the <p class="pub-title"> to an <a> tag:
+
+             <a href="papers/smith-2024-labor.pdf"
+                class="pub-title"
+                download>
+               Title of Your Paper
+             </a>
+
+          The `download` attribute triggers a file download on click.
+          The ↓ arrow is added automatically via CSS.
+          ─────────────────────────────────────────────────────
+        -->
+
+        <!-- !! UPDATE: Replace with your real publications !! -->
+        <div class="pub-item">
+          <p class="pub-venue">Journal of [Field] &middot; 2024 &middot; Vol. 00, pp. 000–000</p>
+
+          <!-- PDF linked: change <p> to <a href="papers/your-file.pdf" download> when ready -->
+          <a href="papers/paper-2024.pdf" class="pub-title" download>
+            Title of Your Published Paper: A Subtitle That Explains the Contribution
+          </a>
+
+          <p class="pub-authors">Your Name and Co-Author Name</p>
+          <p class="pub-abstract" id="abs-1">
+            We study [the research question] using [the methodology and data source].
+            Our identification strategy exploits [the source of variation]. We find that
+            [main finding], which implies [the economic or policy implication]. Results
+            are robust to [key robustness checks].
+          </p>
+          <div class="pub-links">
+            <a href="papers/paper-2024.pdf" class="pub-link" download>PDF ↓</a>
+            <a href="#" class="pub-link">Journal</a>
+            <a href="#" class="pub-link">Replication Files</a>
+            <button class="pub-toggle" onclick="toggleAbstract('abs-1', this)">Abstract ▾</button>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <p class="pub-venue">Another Journal &middot; 2023</p>
+
+          <a href="papers/paper-2023.pdf" class="pub-title" download>
+            Second Published Paper: Economic Analysis of Something Important
+          </a>
+
+          <p class="pub-authors">Your Name</p>
+          <p class="pub-abstract" id="abs-2">
+            Abstract for your second publication. Describe the question, data, method,
+            and key findings in a few concise sentences aimed at an audience of economists.
+          </p>
+          <div class="pub-links">
+            <a href="papers/paper-2023.pdf" class="pub-link" download>PDF ↓</a>
+            <a href="#" class="pub-link">Journal</a>
+            <button class="pub-toggle" onclick="toggleAbstract('abs-2', this)">Abstract ▾</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- WORKING PAPERS ───────────────────────────────────── -->
+      <div class="pub-section">
+        <p class="section-label">Working Papers</p>
+
+        <!-- !! UPDATE: Your working papers !! -->
+        <div class="pub-item">
+          <p class="pub-venue">
+            Working Paper &middot; 2025
+            <span class="pub-status">Under Review</span>
+          </p>
+
+          <a href="papers/working-paper-2025.pdf" class="pub-title" download>
+            Title of Current Working Paper: New Evidence on an Important Question
+          </a>
+
+          <p class="pub-authors">Your Name and Co-Author Name</p>
+          <p class="pub-abstract" id="abs-3">
+            Abstract for your working paper. Briefly describe the research design, the data
+            you use, and your preliminary or main findings. Mention any policy implications.
+          </p>
+          <div class="pub-links">
+            <a href="papers/working-paper-2025.pdf" class="pub-link" download>Draft PDF ↓</a>
+            <a href="#" class="pub-link">SSRN</a>
+            <button class="pub-toggle" onclick="toggleAbstract('abs-3', this)">Abstract ▾</button>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <p class="pub-venue">
+            Work in Progress &middot; 2025
+            <span class="pub-status">In Progress</span>
+          </p>
+
+          <!-- No PDF yet — use a plain <p> instead of an <a> -->
+          <p class="pub-title">Title of Another Project You Are Working On</p>
+
+          <p class="pub-authors">Your Name</p>
+          <p class="pub-abstract" id="abs-4">
+            Brief description of this project. A sentence or two about the research question
+            and approach is useful for colleagues browsing your site.
+          </p>
+          <div class="pub-links">
+            <button class="pub-toggle" style="margin-left:0;" onclick="toggleAbstract('abs-4', this)">Abstract ▾</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- POLICY WORK ──────────────────────────────────────── -->
+      <!-- !! DELETE this section if not applicable !! -->
+      <div class="pub-section">
+        <p class="section-label">Policy Work &amp; Other Writing</p>
+
+        <div class="pub-item">
+          <p class="pub-venue">Policy Brief &middot; 2024</p>
+          <p class="pub-title">Title of Policy Brief or Report</p>
+          <p class="pub-authors">Your Name &middot; Organization or Outlet Name</p>
+          <div class="pub-links">
+            <a href="#" class="pub-link">Read</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- end .col-publications -->
+
+
+    <!-- ════════════════════════════════════════
+         RIGHT COLUMN — CURRICULUM VITAE
+    ═════════════════════════════════════════ -->
+    <div class="col-cv">
+
+      <div class="cv-col-header">
+        <h1>Curriculum Vitae</h1>
+        <!-- !! UPDATE: Keep current !! -->
+        <p>Updated June 2026</p>
+      </div>
+
+      <!-- EDUCATION ──────────────────── -->
+      <div class="cv-section">
+        <p class="section-label">Education</p>
+
+        <!-- !! UPDATE: Your degrees !! -->
+        <div class="cv-item">
+          <span class="cv-year">2021 – now</span>
+          <div>
+            <p class="cv-item-title">PhD in Economics</p>
+            <p class="cv-item-sub">Your University<br>Advisors: Prof. A, Prof. B</p>
+          </div>
+        </div>
+        <div class="cv-item">
+          <span class="cv-year">2019 – 2021</span>
+          <div>
+            <p class="cv-item-title">MA in Economics</p>
+            <p class="cv-item-sub">Your University</p>
+          </div>
+        </div>
+        <div class="cv-item">
+          <span class="cv-year">2015 – 2019</span>
+          <div>
+            <p class="cv-item-title">BA in Economics &amp; Statistics</p>
+            <p class="cv-item-sub">Undergraduate Institution<br>Summa Cum Laude</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- POSITIONS ──────────────────── -->
+      <div class="cv-section">
+        <p class="section-label">Positions</p>
+
+        <!-- !! UPDATE !! -->
+        <div class="cv-item">
+          <span class="cv-year">2023 – 2024</span>
+          <div>
+            <p class="cv-item-title">Pre-Doctoral Fellow</p>
+            <p class="cv-item-sub">Research Institution, City</p>
+          </div>
+        </div>
+        <div class="cv-item">
+          <span class="cv-year">2022 – 2023</span>
+          <div>
+            <p class="cv-item-title">Graduate Research Assistant</p>
+            <p class="cv-item-sub">Your University<br>PI: Prof. Name</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- HONORS & AWARDS ────────────── -->
+      <div class="cv-section">
+        <p class="section-label">Honors &amp; Awards</p>
+
+        <!-- !! UPDATE !! -->
+        <div class="cv-item">
+          <span class="cv-year">2024</span>
+          <div>
+            <p class="cv-item-title">Dissertation Fellowship</p>
+            <p class="cv-item-sub">Granting Organization</p>
+          </div>
+        </div>
+        <div class="cv-item">
+          <span class="cv-year">2023</span>
+          <div>
+            <p class="cv-item-title">Best Paper Prize</p>
+            <p class="cv-item-sub">Conference Name</p>
+          </div>
+        </div>
+        <div class="cv-item">
+          <span class="cv-year">2019</span>
+          <div>
+            <p class="cv-item-title">Undergraduate Award</p>
+            <p class="cv-item-sub">Undergraduate Institution</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEACHING ───────────────────── -->
+      <div class="cv-section">
+        <p class="section-label">Teaching</p>
+
+        <!-- !! UPDATE !! -->
+        <div class="cv-item">
+          <span class="cv-year">Sp. 2025</span>
+          <div>
+            <p class="cv-item-title">TA — Intermediate Microeconomics</p>
+            <p class="cv-item-sub">Your University · Prof. Name</p>
+          </div>
+        </div>
+        <div class="cv-item">
+          <span class="cv-year">Fa. 2024</span>
+          <div>
+            <p class="cv-item-title">TA — Introduction to Econometrics</p>
+            <p class="cv-item-sub">Your University · Prof. Name</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRESENTATIONS ──────────────── -->
+      <div class="cv-section">
+        <p class="section-label">Presentations</p>
+
+        <!-- !! UPDATE !! -->
+        <div class="cv-item">
+          <span class="cv-year">2025</span>
+          <div>
+            <p class="cv-item-title">Conference Name</p>
+            <p class="cv-item-sub">City, Month 2025</p>
+          </div>
+        </div>
+        <div class="cv-item">
+          <span class="cv-year">2024</span>
+          <div>
+            <p class="cv-item-title">Conference Name</p>
+            <p class="cv-item-sub">City, Month 2024</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SKILLS & SOFTWARE ──────────── -->
+      <div class="cv-section">
+        <p class="section-label">Software</p>
+        <!-- !! UPDATE !! -->
+        <div class="cv-item">
+          <span class="cv-year">Stats</span>
+          <div><p class="cv-item-sub">Stata, R, Python, MATLAB</p></div>
+        </div>
+        <div class="cv-item">
+          <span class="cv-year">Other</span>
+          <div><p class="cv-item-sub">LaTeX, Git</p></div>
+        </div>
+      </div>
+
+      <!-- DOWNLOAD FULL CV ────────────── -->
+      <!--
+        !! UPDATE: Add cv.pdf to your project root, then this button is ready !!
+        To create cv.pdf: export from Word/LaTeX and drop it alongside index.html
+      -->
+      <a href="cv.pdf" class="btn" download style="margin-top: 0.5rem; font-size: 11px;">
+        ↓ &nbsp; Download Full CV (PDF)
+      </a>
+
+    </div>
+    <!-- end .col-cv -->
+
+  </div>
+  <!-- end .two-col-wrapper -->
+
+  <!-- ══ FOOTER ═══════════════════════════════════════════════ -->
+  <footer>
+    <p>&copy; 2026 Your Name. All rights reserved.</p>
+    <ul class="footer-links">
+      <li><a href="research.html">Research &amp; CV</a></li>
+      <li><a href="photography.html">Photography</a></li>
+      <li><a href="mailto:you@university.edu">Contact</a></li>
+    </ul>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script>
+    function toggleAbstract(id, btn) {
+      var el = document.getElementById(id);
+      var expanded = el.classList.toggle('expanded');
+      btn.textContent = expanded ? 'Abstract ▴' : 'Abstract ▾';
+    }
+  </script>
+</body>
+</html>

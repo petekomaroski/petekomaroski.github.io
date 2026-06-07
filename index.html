@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- !! UPDATE: Replace "Your Name" with your real name throughout !! -->
+  <title>Your Name</title>
+  <meta name="description" content="PhD economist, researcher, and photographer." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── HOME-SPECIFIC STYLES ── */
+
+    .home-hero {
+      padding: 5rem 2.5rem 4rem;
+      max-width: 760px;
+    }
+
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-bio {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.85;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+
+    .hero-tags {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    /* ── SECTION CARDS ── */
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 0.5px solid var(--rule);
+    }
+
+    .home-card {
+      padding: 2rem 2.5rem;
+      border-right: 0.5px solid var(--rule);
+      transition: background 0.2s;
+    }
+
+    .home-card:last-child { border-right: none; }
+    .home-card:hover { background: rgba(59, 77, 58, 0.04); }
+
+    .home-card-label {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 0.75rem;
+    }
+
+    .home-card h3 {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .home-card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    .home-card-arrow {
+      display: inline-block;
+      margin-top: 1.25rem;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-bottom: 0.5px solid var(--accent-light);
+      padding-bottom: 1px;
+    }
+
+    /* ── RECENT / FEATURED ROW ── */
+    .home-recent {
+      padding: 3rem 2.5rem;
+      border-top: 0.5px solid var(--rule);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .recent-col h4 {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 0.5px solid var(--rule);
+    }
+
+    .recent-item {
+      padding: 0.85rem 0;
+      border-bottom: 0.5px solid var(--rule);
+    }
+
+    .recent-item:last-child { border-bottom: none; }
+
+    .recent-item-meta {
+      font-size: 11px;
+      color: var(--accent-light);
+      letter-spacing: 0.06em;
+      margin-bottom: 0.2rem;
+    }
+
+    .recent-item-title {
+      font-family: var(--serif);
+      font-size: 0.9rem;
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 700px) {
+      .home-hero { padding: 3rem 1.25rem 2.5rem; }
+      .home-grid { grid-template-columns: 1fr; }
+      .home-card { border-right: none; border-bottom: 0.5px solid var(--rule); }
+      .home-recent { grid-template-columns: 1fr; padding: 2rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAVIGATION ══════════════════════════════════════════ -->
+  <nav>
+    <!-- !! UPDATE: Replace with your name !! -->
+    <a href="index.html" class="nav-name">Your Name</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="research.html">Research &amp; CV</a></li>
+      <li><a href="photography.html">Photography</a></li>
+      <!-- Add new sections here as your site grows -->
+    </ul>
+  </nav>
+
+  <!-- ══ HERO ════════════════════════════════════════════════ -->
+  <section class="home-hero">
+    <p class="eyebrow">
+      <!-- !! UPDATE: Your roles / disciplines !! -->
+      Economist · Researcher · Photographer
+    </p>
+    <h1 class="hero-name">
+      <!-- !! UPDATE: Your name and a short italic phrase that captures you !! -->
+      Your Name,<br><em>in full.</em>
+    </h1>
+    <p class="hero-bio">
+      <!-- !! UPDATE: 2–3 sentence bio !! -->
+      PhD candidate and published economist studying [your field] at [your university].
+      I also make photographs — mostly [your subjects] — and write occasionally about
+      things that interest me.
+    </p>
+    <div class="hero-tags">
+      <!-- !! UPDATE: Your research areas / interests !! -->
+      <span class="tag">Labor Economics</span>
+      <span class="tag">Urban Policy</span>
+      <span class="tag">Documentary Photography</span>
+    </div>
+  </section>
+
+  <!-- ══ SECTION CARDS ═══════════════════════════════════════ -->
+  <div class="home-grid">
+    <a href="research.html" class="home-card">
+      <p class="home-card-label">Academic</p>
+      <h3>Curriculum Vitae</h3>
+      <p>Education, appointments, awards, and academic service.</p>
+      <span class="home-card-arrow">View CV →</span>
+    </a>
+    <a href="research.html" class="home-card">
+      <p class="home-card-label">Research</p>
+      <h3>Publications &amp; Working Papers</h3>
+      <p>Peer-reviewed articles, working papers, and policy briefs.</p>
+      <span class="home-card-arrow">View Research →</span>
+    </a>
+    <a href="photography.html" class="home-card">
+      <p class="home-card-label">Photography</p>
+      <h3>Portfolio</h3>
+      <p>Landscape, architecture, and documentary work.</p>
+      <span class="home-card-arrow">View Portfolio →</span>
+    </a>
+  </div>
+
+  <!-- ══ RECENT WORK ══════════════════════════════════════════ -->
+  <div class="home-recent">
+
+    <div class="recent-col">
+      <h4>Recent Publications</h4>
+      <!-- !! UPDATE: Replace with your real publications !! -->
+      <div class="recent-item">
+        <p class="recent-item-meta">Journal of [Field] · 2024</p>
+        <p class="recent-item-title">Title of Your Most Recent Publication</p>
+      </div>
+      <div class="recent-item">
+        <p class="recent-item-meta">Working Paper · 2024</p>
+        <p class="recent-item-title">Title of Your Current Working Paper</p>
+      </div>
+      <div class="recent-item">
+        <p class="recent-item-meta">Journal of [Field] · 2023</p>
+        <p class="recent-item-title">Title of an Earlier Publication</p>
+      </div>
+    </div>
+
+    <div class="recent-col">
+      <h4>Contact</h4>
+      <div class="recent-item">
+        <p class="recent-item-meta">Email</p>
+        <!-- !! UPDATE: Your email !! -->
+        <p class="recent-item-title">
+          <a href="mailto:you@university.edu" style="color: var(--accent); border-bottom: 0.5px solid var(--accent-light);">you@university.edu</a>
+        </p>
+      </div>
+      <div class="recent-item">
+        <p class="recent-item-meta">Department</p>
+        <!-- !! UPDATE: Your department and university !! -->
+        <p class="recent-item-title">Department of Economics<br>Your University</p>
+      </div>
+      <div class="recent-item">
+        <p class="recent-item-meta">Profiles</p>
+        <p class="recent-item-title" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <!-- !! UPDATE: Add your real profile URLs !! -->
+          <a href="#" style="color: var(--accent); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 0.5px solid var(--accent-light);">SSRN</a>
+          <a href="#" style="color: var(--accent); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 0.5px solid var(--accent-light);">Google Scholar</a>
+          <a href="#" style="color: var(--accent); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 0.5px solid var(--accent-light);">LinkedIn</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ FOOTER ═══════════════════════════════════════════════ -->
+  <footer>
+    <!-- !! UPDATE: Your name and year !! -->
+    <p>&copy; 2026 Your Name. All rights reserved.</p>
+    <ul class="footer-links">
+      <li><a href="research.html">Research &amp; CV</a></li>
+      <li><a href="photography.html">Photography</a></li>
+      <li><a href="mailto:you@university.edu">Contact</a></li>
+    </ul>
+  </footer>
+
+  <script src="nav.js"></script>
+</body>
+</html>
