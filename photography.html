@@ -250,6 +250,13 @@
       Delete the <div class="photo-placeholder"> and replace with:
         <img src="images/your-photo.jpg" alt="Description" loading="lazy" />
     -->
+    
+    <div class="photo-cell" data-category="portrait" data-caption="Fireflies in the Smokies"
+         onclick="openLightbox(this)">
+      <img src="images/firefly ruins.jpg" alt="Glowing fireflies surround an old and ruined chimney in a forest at night." loading="lazy" />
+      <div class="photo-overlay"><span class="photo-caption">Fireflies in the Smokies</span></div>
+    </div>
+    
     <div class="photo-cell" data-category="architecture" data-caption="Overlook in the San Juan Mountains, CO"
          onclick="openLightbox(this)">
       <img src="images/jeep overlook.jpg" alt="A jeep parked on a mountain overlooking a valley." loading="lazy" />
@@ -266,12 +273,6 @@
          onclick="openLightbox(this)">
       <img src="images/cowboy.jpg" alt="A man looks out at a Texas sunset across the desert." loading="lazy"/>
       <div class="photo-overlay"><span class="photo-caption">Sunset in Big Bend, TX</span></div>
-    </div>
-
-    <div class="photo-cell" data-category="portrait" data-caption="Portrait — Location, Year"
-         onclick="openLightbox(this)">
-      <div class="photo-placeholder" style="aspect-ratio:2/3; background: linear-gradient(160deg,#C4A882,#7A5030);"></div>
-      <div class="photo-overlay"><span class="photo-caption">Portrait — Location, Year</span></div>
     </div>
 
     <div class="photo-cell" data-category="landscape" data-caption="Landscape Series — No. 2"
