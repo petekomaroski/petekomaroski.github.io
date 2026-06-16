@@ -1,6 +1,6 @@
-# Your Personal Website
+I wanted to gain experience creating projects with AI, so my first project with Claude AI is a quick personal website.
 
-A clean, fast personal site for an economist and photographer — no frameworks, no build tools, pure HTML/CSS/JS.
+(If you're seeing this, please blame any oddities in the code on AI.)
 
 ---
 
